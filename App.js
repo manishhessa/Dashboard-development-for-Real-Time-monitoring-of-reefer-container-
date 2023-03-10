@@ -2,19 +2,36 @@ import './App.css';
 import {ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, AreaChart, Area} from "recharts";
 // import { Fragment } from 'react';
 import React, { useEffect, useState } from "react";
-import Dropdown from './dropdown';
+// import Dropdown from './dropdown';
 
 function App() {
   const [user, setUser] = useState([]);
 
-  
 
   const fetchData = () => {
     return fetch("https://api-generator.retool.com/WihQgH/data")
           .then((response) => response.json())
           .then((data) => setUser(data));
   }
-
+  const OnClickChart = e => {
+    e.preventDefault();
+    console.log(e.value)
+    if(e.target.value === 'Line'){
+      document.querySelector('.linechart').hidden = false;
+      document.querySelector('.barchart').hidden = true;
+      document.querySelector('.areachart').hidden = true;
+    }
+    if(e.target.value === 'Bar'){
+      document.querySelector('.linechart').hidden = true;
+      document.querySelector('.barchart').hidden = false;
+      document.querySelector('.areachart').hidden = true;
+    }
+    if(e.target.value === 'Area'){
+      document.querySelector('.linechart').hidden = true;
+      document.querySelector('.barchart').hidden = true;
+      document.querySelector('.areachart').hidden = false;
+    }
+  }
   useEffect(() => {
     fetchData();
   },[])
@@ -44,62 +61,12 @@ function App() {
           <Line type="monotone" dataKey="Node 3" stroke="#d88499" />
           <Line type="monotone" dataKey="Node 4" stroke="#16A5A5" />
         </LineChart>
-        {/* <p1 className='dropdown'><Dropdown/></p1> */}
-        <div class='btn-group mx-3 ms-5 ps-5' role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-outline-success">Daily</button>
-        <button type="button" class="btn btn-outline-success">Weekly</button>
-        <button type="button" class="btn btn-outline-success">Monthly</button>
-        <button type="button" class="btn btn-outline-success">Quarterly</button>
-          </div>
-
-          <div class='btn-group mx-3' role="group" aria-label="Basic example">
-            {/* <div class="p-4"> */}
-        <button type="button" class="btn btn-outline-success">Line Chart</button>
-        <button type="button" class="btn btn-outline-success">Bar Chart</button>
-        <button type="button" class="btn btn-outline-success">Area Chart</button>
-        </div>
-          {/* </div> */}
-          {/* <div class="dropdown"> */}
-            
-           <button class="btn btn-outline-success dropdown-toggle mx-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-           Temperature
     
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Humidity</a></li>
-          <li><a class="dropdown-item" href="#">VOC</a></li>
-         <li><a class="dropdown-item" href="#">CO2</a></li>
-        </ul>
-      
-         </button>
          
     </div>
-        {/* </div> */}
-      {/* </ResponsiveContainer> */}
-      {/* <h1 className='chart-heading'>Bar Chart</h1> */}
-      {/* <ResponsiveContainer width="100%" height="100%"> */}
-        {/* <BarChart
-          width={1000}
-          height={400}
-          data={user}
-          margin={{
-            top: 5,
-            right: 10,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Time" />
-          <YAxis domain={[0, 20]}/>
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="Node 1" fill="#8884d8" />
-          <Bar dataKey="Node 2" fill="#82ca9d" />
-          <Bar dataKey="Node 3" fill="#d88499" />
-          <Bar dataKey="Node 4" fill="#16A5A5" />
-        </BarChart> */}
-      {/* </ResponsiveContainer> */}
-      <div className='barchart'>
+
+        
+      <div className='barchart' hidden>
       <h1 className='chart-heading'>Stacked Bar Chart</h1>
       {/* <ResponsiveContainer width="100%" height="100%"> */}
         <BarChart
@@ -125,7 +92,7 @@ function App() {
         </BarChart>
         </div>
       {/* </ResponsiveContainer> */}
-      <div className='areachart'>
+      <div className='areachart' hidden>
       <h1 className='chart-heading'>Stacked Area Chart</h1>
       {/* <ResponsiveContainer width="100%" height="100%"> */}
         {/* <AreaChart
@@ -179,7 +146,31 @@ function App() {
     <Area type="monotone" dataKey="Node 4" stroke="#3E98B5" fillOpacity={1} fill="url(#Node4)" />
   </AreaChart>
   </div>
+  {/* below code is for daily weekly monthly buttons till div is closed  */}
 
+  <div className='btn-group mx-3 ms-5 ps-5' role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-success">Daily</button>
+        <button type="button" class="btn btn-outline-success">Weekly</button>
+        <button type="button" class="btn btn-outline-success">Monthly</button>
+        <button type="button" class="btn btn-outline-success">Quarterly</button>
+          </div>
+  <div className='btn-group mx-3 ' role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-outline-success" onClick={OnClickChart} value='Line'>Line Chart</button>
+        <button type="button" class="btn btn-outline-success" onClick={OnClickChart} value='Bar'>Bar Chart</button>
+        <button type="button" class="btn btn-outline-success" onClick={OnClickChart} value='Area'>Area Chart</button>
+        </div>
+
+        <button class="btn btn-outline-success dropdown-toggle mx-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           Temperature
+    
+        <ul class="dropdown-menu">
+        <li><a class="dropdown-item"  href="#">Temperature</a></li>
+          <li><a class="dropdown-item" href="#">Humidity</a></li>
+          <li><a class="dropdown-item" href="#">VOC</a></li>
+         <li><a class="dropdown-item" href="#">CO2</a></li>
+        </ul>
+      
+         </button>
     </div>
     
   );
