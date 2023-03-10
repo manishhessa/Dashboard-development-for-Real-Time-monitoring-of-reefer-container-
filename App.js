@@ -2,7 +2,6 @@ import './App.css';
 import {ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar, AreaChart, Area} from "recharts";
 // import { Fragment } from 'react';
 import React, { useEffect, useState } from "react";
-// import Dropdown from './dropdown';
 
 function App() {
   const [user, setUser] = useState([]);
@@ -13,6 +12,9 @@ function App() {
           .then((response) => response.json())
           .then((data) => setUser(data));
   }
+  useEffect(() => {
+    fetchData();
+  },[])
   const OnClickChart = e => {
     e.preventDefault();
     console.log(e.value)
@@ -32,9 +34,7 @@ function App() {
       document.querySelector('.areachart').hidden = false;
     }
   }
-  useEffect(() => {
-    fetchData();
-  },[])
+
   return (
     <div className='container'> 
     <div className='linechart'>
